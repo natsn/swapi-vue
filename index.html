@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>VUE SWAPI</title>
+    <script src="vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+    <a v-bind:href="link">Where I got this stuff from</a>
+      <h1>{{adate}}</h1>
+      {{message}}
+      <b v-if="seen">seen</b>
+      <ul>
+        <li v-for="t in tasks">{{t.name}} — {{t.value+1}}</li>
+      </ul>
+
+      <button v-on:click="doIt">Do it...</button>
+
+      <pre>x+y+z={{parseInt(x,10)+parseInt(y,10)+parseInt(z,10)}}</pre>
+      <input v-model="x">
+      <input v-model="y">
+      <input v-model="z">
+
+      <thing></thing>
+
+      <thingprops v-for="t in tasks" v-bind:task="t" v-bind:message="message"></thingprops>
+    </div>
+    <script>
+      
+      var app = new Vue({
+        el: '#app',
+        data: { 
+          message: "HELLO", 
+          link:"https://vuejs.org/v2/guide/index.html",
+          adate: new Date(),
+          seen: true,
+          tasks: [{name:"foo", value:0},{name:"bar", value:1},{name:"baz", value:2}],
+          x:0,
+          y:0,
+          z:0
+        },
+        methods: {
+          doIt: function () {
+            this.message = "Did It"
+          }
+        }
+      });
+
+      app.tasks.push({ name: 'New item' })
+
+
+      Vue.component('thing', {
+        template: '<p>a thingy</p>'
+      })
+
+      Vue.component('thingprops', {
+        props: ['task', 'message'],
+        template: '<p>{{task.name}}({{task.value}}) — {{message}}</p>'
+      })
+
+
+
+    </script>
+  </body>
+</html>
