@@ -2,6 +2,8 @@
   <head>
     <title>VUE SWAPI</title>
     <script src="vue.js"></script>
+    <script src="jquery.js"></script>
+
   </head>
   <body>
     <div id="app">
@@ -23,40 +25,60 @@
       <thing></thing>
 
       <thingprops v-for="t in tasks" v-bind:task="t" v-bind:message="message"></thingprops>
+
+
+      <h1>SWAPI</h1>
+      <ul>
+        <person v-for="p in people" v-bind:person="p"></person>
+      </ul>
     </div>
     <script>
-      
-      var app = new Vue({
-        el: '#app',
-        data: { 
-          message: "HELLO", 
-          link:"https://vuejs.org/v2/guide/index.html",
-          adate: new Date(),
-          seen: true,
-          tasks: [{name:"foo", value:0},{name:"bar", value:1},{name:"baz", value:2}],
-          x:0,
-          y:0,
-          z:0
-        },
-        methods: {
-          doIt: function () {
-            this.message = "Did It"
+
+        Vue.component('thing', {
+          template: '<p>a thingy</p>'
+        })
+
+        Vue.component('thingprops', {
+          props: ['task', 'message'],
+          template: '<p>{{task.name}}({{task.value}}) — {{message}}</p>'
+        })
+
+        Vue.component('person', {
+          props: ['person'],
+          template: '<li>{{person.name}}</li>'
+        })
+
+        var apiURL = "http://swapi.co/api/";
+        var app = new Vue({
+          el: '#app',
+          data: { 
+            message: "HELLO", 
+            link:"https://vuejs.org/v2/guide/index.html",
+            adate: new Date(),
+            seen: true,
+            tasks: [{name:"foo", value:0},{name:"bar", value:1},{name:"baz", value:2}],
+            x:0,
+            y:0,
+            z:0,
+            people: null
+          },
+          methods: {
+            doIt: function () {
+              this.message = "Did It"
+            },
+            fetchPeople: function () {
+              var self = this;
+              $.get( apiURL + 'people', function( data ) {
+                  self.people = data.results;
+              });
+            }
           }
-        }
-      });
+        });
+        app.fetchPeople()
+        app.tasks.push({ name: 'New item' })
 
-      app.tasks.push({ name: 'New item' })
 
-
-      Vue.component('thing', {
-        template: '<p>a thingy</p>'
-      })
-
-      Vue.component('thingprops', {
-        props: ['task', 'message'],
-        template: '<p>{{task.name}}({{task.value}}) — {{message}}</p>'
-      })
-
+        
 
 
     </script>
