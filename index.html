@@ -68,7 +68,7 @@
             },
             fetchPeople: function () {
               var self = this;
-              $.get( apiURL + 'people', function( data ) {
+              $.get( apiURL + 'people/', function( data ) {
                   self.people = data.results;
               });
             }
