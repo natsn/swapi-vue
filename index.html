@@ -1,13 +1,46 @@
 <html>
   <head>
     <title>VUE SWAPI</title>
-    <script src="vue.js"></script>
-    <script src="jquery.js"></script>
+    
+    <link rel="stylesheet" href="bulma.css" />
+    <link rel="stylesheet" href="chartist.min.css" />
+    <link rel="stylesheet" href="icons/css/font-awesome.min.css">
 
   </head>
   <body>
     <div id="app">
-    <a v-bind:href="link">Where I got this stuff from</a>
+      <nav class="nav has-shadow" id="top">
+      <div class="container">
+        <div class="nav-left">
+          <a class="nav-item" href="#">
+            <i class="fa fa-home" aria-hidden="true"></i>
+          </a>
+        </div>
+        <span class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <div class="nav-right nav-menu">
+          <a class="nav-item is-tab is-active">
+            People
+          </a>
+          <a class="nav-item is-tab">
+            Planets
+          </a>
+        </div>
+      </div>
+    </nav>
+    <section class="section">
+      <div class="container content">
+      
+      <h1>SWAPI <i class="fa fa-bomb"></i> </h1>
+      <ul>
+        <person v-for="p in people" v-bind:person="p"></person>
+      </ul>
+
+      <a v-bind:href="link">Where I got this stuff from</a>
+
       <h1>{{adate}}</h1>
       {{message}}
       <b v-if="seen">seen</b>
@@ -15,72 +48,40 @@
         <li v-for="t in tasks">{{t.name}} — {{t.value+1}}</li>
       </ul>
 
-      <button v-on:click="doIt">Do it...</button>
+      <button class="button" v-on:click="doIt"> <i class="fa fa-rocket"></i> &nbsp;   Do it...</button>
 
-      <pre>x+y+z={{parseInt(x,10)+parseInt(y,10)+parseInt(z,10)}}</pre>
-      <input v-model="x">
-      <input v-model="y">
-      <input v-model="z">
+      <h2>{{x}}+{{y}}+{{z}}={{parseInt(x,10)+parseInt(y,10)+parseInt(z,10)}}</h2>
+      <b class="label">x</b><input class="input" v-model="x" placeholder="enter a number">
+      <b class="label">y</b><input class="input" v-model="y" placeholder="enter a number">
+      <b class="label">z</b><input class="input" v-model="z" placeholder="enter a number">
 
       <thing></thing>
 
       <thingprops v-for="t in tasks" v-bind:task="t" v-bind:message="message"></thingprops>
+      
+      <button class="button" v-on:click="doPlanetStuff">Get planets and diameters</button>
 
 
-      <h1>SWAPI</h1>
-      <ul>
-        <person v-for="p in people" v-bind:person="p"></person>
-      </ul>
+      <div id="chart"></div>
+      <div class="ct-chart"></div>
+
+
     </div>
-    <script>
 
-        Vue.component('thing', {
-          template: '<p>a thingy</p>'
-        })
-
-        Vue.component('thingprops', {
-          props: ['task', 'message'],
-          template: '<p>{{task.name}}({{task.value}}) — {{message}}</p>'
-        })
-
-        Vue.component('person', {
-          props: ['person'],
-          template: '<li>{{person.name}}</li>'
-        })
-
-        var apiURL = "http://swapi.co/api/";
-        var app = new Vue({
-          el: '#app',
-          data: { 
-            message: "HELLO", 
-            link:"https://vuejs.org/v2/guide/index.html",
-            adate: new Date(),
-            seen: true,
-            tasks: [{name:"foo", value:0},{name:"bar", value:1},{name:"baz", value:2}],
-            x:0,
-            y:0,
-            z:0,
-            people: null
-          },
-          methods: {
-            doIt: function () {
-              this.message = "Did It"
-            },
-            fetchPeople: function () {
-              var self = this;
-              $.get( apiURL + 'people', function( data ) {
-                  self.people = data.results;
-              });
-            }
-          }
-        });
-        app.fetchPeople()
-        app.tasks.push({ name: 'New item' })
+      </div>
+    </section>
+      
 
 
-        
 
 
-    </script>
+      
+
+
+
+    <script src="jquery.js"></script>
+    <script src="vue.js"></script>
+    <script src="chartist.min.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
